@@ -27,3 +27,4 @@ version.
 ## Dependencies
 * awk
 * wget
+* md5sum
