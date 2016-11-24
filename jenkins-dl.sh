@@ -64,6 +64,8 @@ EVALCODE="$( wget -O - "$BUILDPATH2" "$FPRPATH" | awk '
 [ -n "$EVALCODE" ] || fail retrieving metadata
 
 eval $EVALCODE
+[ "$REVISION" = "unknown" -o "$FINGERPRINT" = "unknown" ] && \
+	fail getting revision and/or fingerprint
 
 DESTFILE="$FLAVOUR-$BUILDNO-$REVISION.$EXT"
 
