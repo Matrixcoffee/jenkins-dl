@@ -1,11 +1,19 @@
 #!/bin/sh
 
+usage () {
+	echo "Usage: $0 <build>"
+	echo "Download a Jenkins build artifact, where <build> is the build"
+	echo "number. Other parameters are configured by editing the file."
+	exit 1
+}
+
 fail () {
 	echo "Failed $*."
 	exit 1
 }
 
 BUILDNO="$1"
+[ -n "$BUILDNO" ] || usage
 
 FLAVOUR=vector-appfdroid-debug
 
