@@ -68,7 +68,19 @@ if [ -e "$DESTFILE" ]; then
 fi
 
 [ ! -e "$DESTFILE" ] || fail deleting target file
-[ ! -e "$DESTFILE" ] && wget -t 1 "$BUILDPATH/$FILEPATH" -O "$DESTFILE"
+if [ ! -e "$DESTFILE" ]; then
+	T=1
+	until wget -c -t 1 "$BUILDPATH/$FILEPATH" -O "$DESTFILE"
+	do
+		if ! truncate -c -s -50K "$DESTFILE"; then
+			rm -v "$DESTFILE"
+			fail truncating "$DESTFILE"
+		fi
+		echo "$( date ): [Waiting for $T seconds]"
+		sleep "$T"
+		T="$(( T * 2 ))"
+	done
+fi
 [ -e "$DESTFILE" ] || fail downloading file
 if echo "$FINGERPRINT  $DESTFILE" | md5sum -c; then
 	exit 0

@@ -6,6 +6,7 @@ to download the F-Droid build of Riot Android.
 
 ## Features
 * Give the file a useful name with build number and commit hash
+* Auto-resume with workaround for Jenkins bug
 
 ## Configuration
 Edit the variables in the script.
