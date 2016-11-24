@@ -1,5 +1,15 @@
 #!/bin/sh
 
+# Configuration
+
+JOBROOT="https://matrix.org/jenkins/job/VectorAndroidDevelop"
+FLAVOUR=vector-appfdroid-debug
+EXT="apk"
+FILE="$FLAVOUR.$EXT"
+FILEPATH="artifact/vector/build/outputs/apk/$FILE"
+
+# Helper functions
+
 usage () {
 	echo "Usage: $0 <build>"
 	echo "Download a Jenkins build artifact, where <build> is the build"
@@ -12,15 +22,13 @@ fail () {
 	exit 1
 }
 
+# Main program
+
 BUILDNO="$1"
 [ -n "$BUILDNO" ] || usage
 
-FLAVOUR=vector-appfdroid-debug
-
-FILE="$FLAVOUR.apk"
-BUILDPATH="https://matrix.org/jenkins/job/VectorAndroidDevelop/$BUILDNO"
+BUILDPATH="$JOBROOT/$BUILDNO"
 BUILDPATH2="$BUILDPATH/"
-FILEPATH="artifact/vector/build/outputs/apk/$FILE"
 FPRPATH="$BUILDPATH/$FILEPATH/*fingerprint*/"
 
 EVALCODE="$( wget -O - "$BUILDPATH2" "$FPRPATH" | awk '
@@ -57,14 +65,16 @@ EVALCODE="$( wget -O - "$BUILDPATH2" "$FPRPATH" | awk '
 
 eval $EVALCODE
 
-DESTFILE="$FLAVOUR-$BUILDNO-$REVISION".apk
+DESTFILE="$FLAVOUR-$BUILDNO-$REVISION.$EXT"
 
 echo
+echo ------------------------------------------------------------------------
 echo "Build: $BUILDNO"
 echo "Flavour: $FLAVOUR"
 echo "Revision: $REVISION"
 echo "Fingerprint: $FINGERPRINT"
 echo "Target: $DESTFILE"
+echo ------------------------------------------------------------------------
 echo
 
 if [ -e "$DESTFILE" ]; then
