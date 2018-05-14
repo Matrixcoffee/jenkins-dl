@@ -6,7 +6,7 @@ JOBROOT="https://matrix.org/jenkins/job/VectorAndroidDevelop"
 FLAVOUR=vector-appfdroid-debug
 EXT="apk"
 FILE="$FLAVOUR.$EXT"
-FILEPATH="artifact/vector/build/outputs/apk/$FILE"
+FILEPATH="artifact/vector/build/outputs/apk/appfdroid/debug/$FILE"
 
 # Helper functions
 
